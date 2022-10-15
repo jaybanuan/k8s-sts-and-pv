@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "k8s-sts-and-pv-web"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "k8s_sts_and_pv_web"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.2.2"
+requests = "^2.28.1"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.982"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
