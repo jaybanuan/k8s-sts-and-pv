@@ -1,0 +1,16 @@
+{
+    "listeners": {
+        "*:8080": {
+            "pass": "applications/backend"
+        }
+    },
+    "applications": {
+        "backend": {
+            "type": "python",
+            "path": "/www/",
+            "module": "k8s_sts_and_pv_backend",
+            "callable": "app",
+            "threads": 10
+        }
+    }
+}
