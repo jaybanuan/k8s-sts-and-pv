@@ -1,0 +1,90 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: web
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: k8s-sts-and-pv-web:1.0.0
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: backend-sts
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-sts
+  labels:
+    app: backend-sts
+spec:
+  clusterIP: None
+  selector:
+    app: backend-sts
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: backend-sts
+spec:
+  serviceName: backend-sts
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-sts
+  template:
+    metadata:
+      labels:
+        app: backend-sts
+    spec:
+      containers:
+      - name: backend-sts
+        image: k8s-sts-and-pv-backend:1.0.0
+        ports:
+          - containerPort: 8080
+        env:
+          - name: FLASK_DATA_FILE_DIR
+            value: /data

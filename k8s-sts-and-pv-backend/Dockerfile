@@ -18,3 +18,9 @@ EOF
 
 # Copy NGINX Unit config file
 COPY config.json /docker-entrypoint.d/config.json
+
+# create mount point
+RUN <<EOF
+  mkdir /data
+  chown unit:unit /data
+EOF

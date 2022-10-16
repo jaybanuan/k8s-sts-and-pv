@@ -1,0 +1,15 @@
+services:
+  web:
+    image: k8s-sts-and-pv-web:1.0.0
+    ports:
+      - 8080:8080
+
+  backend:
+    image: k8s-sts-and-pv-backend:1.0.0
+    environment:
+      FLASK_DATA_FILE_DIR: /data
+    volumes:
+      - backend-data:/data
+
+volumes:
+  backend-data:
